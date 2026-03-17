@@ -48,6 +48,30 @@ If you are working on a Linux machine or WSL, you can use the same scripts:
 bash scripts/setup.sh
 ```
 
+## Building Smart Contracts
+
+### Compile a Cairo contract
+
+```bash
+source .venv/bin/activate
+starknet-compile contracts/ShieldedPool.cairo --output contracts/ShieldedPool_compiled.json
+```
+
+### Deploy to Starknet Goerli testnet
+
+1. Get some ETH on Goerli (faucet)
+2. Set up your account:
+
+```bash
+starkli account oz init --keystore ~/.starkli-wallets/deployer --account ~/.starkli-wallets/deployer
+```
+
+3. Deploy:
+
+```bash
+starkli contract deploy contracts/ShieldedPool_compiled.json --account ~/.starkli-wallets/deployer --rpc https://starknet-goerli.infura.io/v3/YOUR_INFURA_KEY
+```
+
 ## Project Structure
 
 - `contracts/`: Cairo smart contracts
