@@ -12,7 +12,7 @@ A shielded private payroll system for Bitcoin on Starknet.
 ## Tech Stack
 
 - Starknet (Cairo)
-- Python backend
+- Python backend (FastAPI)
 - Wrapped BTC (WBTC)
 
 ## Getting Started (GitHub Codespaces)
@@ -71,6 +71,34 @@ starkli account oz init --keystore ~/.starkli-wallets/deployer --account ~/.star
 ```bash
 starkli contract deploy contracts/ShieldedPool_compiled.json --account ~/.starkli-wallets/deployer --rpc https://starknet-goerli.infura.io/v3/YOUR_INFURA_KEY
 ```
+
+## API Endpoints
+
+### POST /create-payroll
+Create private vouchers for payroll distribution.
+
+**Request Body:**
+```json
+{
+  "entries": [
+    {
+      "employee_address": "0xEMPLOYEE_ADDRESS",
+      "amount": 1000
+    }
+  ]
+}
+```
+
+**Response:**
+```json
+{
+  "vouchers": [...],
+  "message": "Payroll vouchers created successfully"
+}
+```
+
+### GET /voucher/{voucher_id}
+Get voucher details for employee verification.
 
 ## Project Structure
 
