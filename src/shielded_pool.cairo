@@ -1,14 +1,23 @@
 #[starknet::contract]
-mod ShieldedPool {
-    use starknet::{ContractAddress, get_caller_address};
-    use starknet::storage::{Map, StorageMapReadAccess, StorageMapWriteAccess, StoragePointerReadAccess, StoragePointerWriteAccess};
 
-    #[starknet::interface]
-    trait IShieldedPool<TContractState> {
+#[starknet::interface]
+pub trait IShieldedPool<TContractState> {
         fn deposit(ref self: TContractState, amount: u256);
         fn withdraw(ref self: TContractState, amount: u256);
         fn get_deposit(self: @TContractState, user: ContractAddress) -> u256;
         fn get_total_deposits(self: @TContractState) -> u256;
+}
+
+mod ShieldedPool {
+    use starknet::{ContractAddress, get_caller_address};
+    use starknet::storage::{Map, StorageMapReadAccess, StorageMapWriteAccess, StoragePointerReadAccess, StoragePointerWriteAccess};
+
+    ##[starknet::interface]
+    #trait IShieldedPool<TContractState> {
+        #fn deposit(ref self: TContractState, amount: u256);
+        #fn withdraw(ref self: TContractState, amount: u256);
+        #fn get_deposit(self: @TContractState, user: ContractAddress) -> u256;
+        #fn get_total_deposits(self: @TContractState) -> u256;
     }
 
     #[storage]
