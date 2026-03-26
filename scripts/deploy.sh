@@ -10,13 +10,13 @@ scarb build
 # Deploy ShieldedPool
 #echo "Deploying ShieldedPool..."
 #DEPLOY_RESULT=$(sncast deploy --contract-name ShieldedPool --account $ACCOUNT_ADDRESS --private-key $PRIVATE_KEY)
-# 1. Declare the contract (Uploads the code)
+# 1. Declare (The "Blueprint")
 echo "Declaring ShieldedPool..."
-sncast --url $STARKNET_RPC_URL --account $ACCOUNT_ADDRESS --private-key $PRIVATE_KEY declare --contract-name ShieldedPool
+sncast declare --contract-name ShieldedPool --url $STARKNET_RPC_URL --account $ACCOUNT_ADDRESS --private-key $PRIVATE_KEY
 
-# 2. Deploy the contract (Creates the instance)
+# 2. Deploy (The "Instance")
 echo "Deploying ShieldedPool..."
-DEPLOY_RESULT=$(sncast --url $STARKNET_RPC_URL --account $ACCOUNT_ADDRESS --private-key $PRIVATE_KEY deploy --contract-name ShieldedPool)
+DEPLOY_RESULT=$(sncast deploy --contract-name ShieldedPool --url $STARKNET_RPC_URL --account $ACCOUNT_ADDRESS --private-key $PRIVATE_KEY)
 
 echo $DEPLOY_RESULT
 
