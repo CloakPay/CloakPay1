@@ -1,9 +1,11 @@
 use cloakpay::payroll_vouchers::{IPayrollVouchersDispatcher, IPayrollVouchersDispatcherTrait};
 use starknet::{ContractAddress, contract_address_const};
-use snforge_std::{declare, ContractClassTrait, DeclareResultTrait, start_cheat_caller_global, stop_cheat_caller_global};
+// Removed DeclareResultTrait and global cheatcodes
+use snforge_std::{declare, ContractClassTrait, start_cheat_caller, stop_cheat_caller}; 
 
 fn deploy_payroll_vouchers() -> ContractAddress {
-    let contract = declare("PayrollVouchers").unwrap().contract_class();
+    // In newer snforge, declare().unwrap() gives you the contract directly
+    let contract = declare("PayrollVouchers").unwrap(); 
     let (contract_address, _) = contract.deploy(@ArrayTrait::new()).unwrap();
     contract_address
 }

@@ -1,10 +1,9 @@
 use cloakpay::shielded_pool::{IShieldedPoolDispatcher, IShieldedPoolDispatcherTrait};
 use starknet::{ContractAddress, contract_address_const};
-use snforge_std::{declare, ContractClassTrait, DeclareResultTrait, start_cheat_caller_global, stop_cheat_caller_global};
+use snforge_std::{declare, ContractClassTrait, start_cheat_caller, stop_cheat_caller};
 
 fn deploy_shielded_pool() -> ContractAddress {
-    // Note: unwrap() on DeclareResultTrait returns a DeclareResult
-    let contract = declare("ShieldedPool").unwrap().contract_class();
+    let contract = declare("ShieldedPool").unwrap();
     let (contract_address, _) = contract.deploy(@ArrayTrait::new()).unwrap();
     contract_address
 }
