@@ -1,6 +1,4 @@
-use cloakpay::payroll_vouchers::PayrollVouchers;
-use cloakpay::payroll_vouchers::IPayrollVouchersDispatcher;
-use cloakpay::payroll_vouchers::IPayrollVouchersDispatcherTrait;
+use cloakpay::payroll_vouchers::{IPayrollVouchersDispatcher, IPayrollVouchersDispatcherTrait};
 use starknet::{ContractAddress, contract_address_const};
 use snforge_std::{declare, ContractClassTrait, DeclareResultTrait, start_cheat_caller_global, stop_cheat_caller_global};
 
@@ -19,7 +17,6 @@ fn test_create_voucher() {
     let employee = contract_address_const::<0x123456>();
     
     start_cheat_caller_global(employer);
-    
     dispatcher.create_voucher(employee, 500);
     
     let amount = dispatcher.get_voucher_amount(1);
@@ -41,7 +38,6 @@ fn test_create_multiple_vouchers() {
     let employee2 = contract_address_const::<0x222222>();
     
     start_cheat_caller_global(employer);
-    
     dispatcher.create_voucher(employee1, 500);
     dispatcher.create_voucher(employee2, 750);
     dispatcher.create_voucher(employee1, 300);
@@ -89,7 +85,7 @@ fn test_claim_voucher_unauthorized() {
     stop_cheat_caller_global();
     
     start_cheat_caller_global(unauthorized);
-    dispatcher.claim_voucher(1); // Should panic - not authorized
+    dispatcher.claim_voucher(1); 
     stop_cheat_caller_global();
 }
 
@@ -108,7 +104,7 @@ fn test_claim_voucher_twice() {
     
     start_cheat_caller_global(employee);
     dispatcher.claim_voucher(1);
-    dispatcher.claim_voucher(1); // Should panic - already claimed
+    dispatcher.claim_voucher(1); 
     stop_cheat_caller_global();
 }
 
@@ -127,12 +123,3 @@ fn test_get_voucher_amount() {
     let amount = dispatcher.get_voucher_amount(1);
     assert(amount == 1000, 'Amount should be 1000');
 }
-
-    # Simulate claiming as the employee
-    PayrollVouchers.claim_voucher(voucher_id)
-
-    let (emp, amt, claimed) = PayrollVouchers.get_voucher(voucher_id)
-    assert claimed = 1
-
-    return ()
-end
