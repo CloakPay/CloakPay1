@@ -1,2 +1,2 @@
-mod shielded_pool;
-mod payroll_vouchers;
+pub mod shielded_pool;
+pub mod payroll_vouchers;

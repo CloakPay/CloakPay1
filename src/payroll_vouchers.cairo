@@ -1,15 +1,21 @@
+use starknet::ContractAddress;
+
+// 1. Move the interface OUTSIDE the mod block
+// 2. Add 'pub' so it's visible to the rest of the project
+#[starknet::interface]
+pub trait IPayrollVouchers<TContractState> {
+    fn create_voucher(ref self: TContractState, employee: ContractAddress, amount: u256);
+    fn claim_voucher(ref self: TContractState, voucher_id: u256);
+    fn get_voucher_amount(self: @TContractState, voucher_id: u256) -> u256;
+    fn is_claimed(self: @TContractState, voucher_id: u256) -> bool;
+}
+
 #[starknet::contract]
 mod PayrollVouchers {
     use starknet::{ContractAddress, get_caller_address};
     use starknet::storage::{Map, StorageMapReadAccess, StorageMapWriteAccess, StoragePointerReadAccess, StoragePointerWriteAccess};
-
-    #[starknet::interface]
-    trait IPayrollVouchers<TContractState> {
-        fn create_voucher(ref self: TContractState, employee: ContractAddress, amount: u256);
-        fn claim_voucher(ref self: TContractState, voucher_id: u256);
-        fn get_voucher_amount(self: @TContractState, voucher_id: u256) -> u256;
-        fn is_claimed(self: @TContractState, voucher_id: u256) -> bool;
-    }
+    // Import the interface into the module scope
+    use super::IPayrollVouchers;
 
     #[storage]
     struct Storage {
@@ -43,9 +49,6 @@ mod PayrollVouchers {
     #[abi(embed_v0)]
     impl PayrollVouchersImpl of IPayrollVouchers<ContractState> {
         fn create_voucher(ref self: ContractState, employee: ContractAddress, amount: u256) {
-            let _caller = get_caller_address();
-            // In real implementation, verify caller is authorized (e.g., employer)
-
             let voucher_id = self.voucher_count.read() + 1;
             self.voucher_count.write(voucher_id);
 
@@ -59,13 +62,14 @@ mod PayrollVouchers {
         fn claim_voucher(ref self: ContractState, voucher_id: u256) {
             let caller = get_caller_address();
             let employee = self.voucher_employee.read(voucher_id);
+            
+            // Basic authorization check
             assert(employee == caller, 'Not authorized');
             assert(!self.claimed.read(voucher_id), 'Already claimed');
 
-            let amount = self.voucher_amount.read(voucher_id);
             self.claimed.write(voucher_id, true);
+            let amount = self.voucher_amount.read(voucher_id);
 
-            // In real implementation, transfer funds from ShieldedPool
             self.emit(VoucherClaimed { voucher_id, employee: caller, amount });
         }
 
