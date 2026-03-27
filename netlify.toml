@@ -1,0 +1,25 @@
+# 1. Build Settings
+[build]
+  command = "npm run build"
+  publish = "dist" # Change to "build" if using Create React App
+
+# 2. Single Page App (SPA) Redirects
+# This prevents 404 errors when a user refreshes the page on a sub-route
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200
+
+# 3. Security Headers
+# This enhances your "dark tech" professional status by securing the site
+[[headers]]
+  for = "/*"
+  [headers.values]
+    X-Frame-Options = "DENY"
+    X-Content-Type-Options = "nosniff"
+    Content-Security-Policy = "upgrade-insecure-requests"
+    Referrer-Policy = "strict-origin-when-cross-origin"
+
+# 4. Environment Variables (Optional context-specific)
+[context.production.environment]
+  NODE_VERSION = "20"
