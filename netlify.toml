@@ -1,10 +1,9 @@
-# 1. Build Settings
 [build]
+  # Tell Netlify to change directory into cloakpay2 before running commands
+  base = "cloakpay2"
   command = "npm run build"
-  publish = "dist" # Change to "build" if using Create React App
+  publish = "dist"
 
-# 2. Single Page App (SPA) Redirects
-# This prevents 404 errors when a user refreshes the page on a sub-route
 [[redirects]]
   from = "/*"
   to = "/index.html"
