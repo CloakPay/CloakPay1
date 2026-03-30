@@ -4,18 +4,22 @@ version = "0.1.0"
 edition = "2024_07"
 
 [dependencies]
-starknet = "2.9.2"
+starknet = "2.16.2"
 # Added this for test runners and cheatcodes (like start_cheat_caller)
-# snforge_std = "0.50.0" 
+snforge_std = "0.58.0" 
 
 [dev-dependencies]
 # Ensures snforge is available specifically for the test target
-# snforge_std = "0.50.0"
+snforge_std = "0.58.0"
 
 [[target.starknet-contract]]
 sierra = true
 # Enable CASM for local testing and deployment
 casm = true 
+
+[tool.scarb]
+# This is a life-saver for Mac/Windows compatibility
+allow-prebuilt-plugins = ["snforge_std"]
 
 [[test]]
 name = "cloakpay_tests"
